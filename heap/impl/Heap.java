@@ -135,7 +135,7 @@ public abstract class Heap<E> {
 	 */
 	protected void raiseKeyAt(int i) {
 		assert i == 0 || isHeapBut(parent(i));
-		
+
 		// if the parent index is not the root and the parent number is smaller
 		// then the child number, swap them and call recursive function on parent
 		if (parent(i) >= 0 && compy.compare(internal[parent(i)], internal[i]) < 0) {

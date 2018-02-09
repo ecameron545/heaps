@@ -132,7 +132,7 @@ public class HeapPriorityQueue<E> extends Heap<E> implements PriorityQueue<E> {
     public void insert(E x) {
         if (isFull()) throw new FullContainerException();
          throw new UnsupportedOperationException();
-        assert isHeap();
+        //assert isHeap();
     }
 
     /**

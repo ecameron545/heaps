@@ -2,57 +2,71 @@ package impl;
 
 import java.util.Comparator;
 
-
 /**
  * HeapSorter.java
  *
  * Class to implement the heapsort algorithm.
  *
- * @author Thomas VanDrunen
- * CSCI 345, Wheaton College   
- * Originally for CSCI 245, Spring 2007
- * Revised June 2, 2016
+ * @author Thomas VanDrunen CSCI 345, Wheaton College Originally for CSCI 245,
+ *         Spring 2007 Revised June 2, 2016
  */
 
 public class HeapSorter extends Heap<Integer> {
 
+	/**
+	 * Constructor. Take an array an sets it up as a (max-) heap.
+	 * 
+	 * @param internal
+	 *            The array to be used for the internal representation.
+	 */
+	private HeapSorter(int[] array) {
+		internal = new Integer[array.length];
+		for (int i = 0; i < array.length; i++)
+			internal[i] = array[i];
+		heapSize = array.length;
 
-    /**
-     * Constructor. Take an array an sets it up as a (max-) heap.
-     * @param internal The array to be used for the internal representation.
-     */
-    private HeapSorter(int[] array) {
-        internal = new Integer[array.length];
-        for (int i = 0; i < array.length; i++)
-            internal[i] = array[i];
-        heapSize = array.length;
-        
-         //fix this; set compy to an appropriate comparator
-        
-        // insert code for rearranging this as a heap
-        
-    }
-    
-    /**
-     * Sort this array, in place.
-     * @param array The array to sort.
-     */
-    public static void sort(int[] array) {
-    
-        HeapSorter heap = new HeapSorter(array);
+		// create a new comparator object
+		compy = new Comparator<Integer>() {
+			public int compare(Integer o1, Integer o2) {
+				if (o1 > o2)
+					return 1;
+				else if (o2 < o2)
+					return -1;
+				else
+					return 0;
+			}
+		};
+		
+		int pos = heapSize-1;
+		while(pos > 0) {
+			raiseKeyAt(pos--);
+		}
+		for(int i = 0; i < heapSize; i++) {
+			System.out.print(internal[i] + ";");
+		}
+		System.out.println("");	
+	}
 
-        
-        // insert code for completing the heap sort algorithm,
-        // with post condition that heap.internal is sorted
-        
+	/**
+	 * Sort this array, in place.
+	 * 
+	 * @param array
+	 *            The array to sort.
+	 */
+	public static void sort(int[] array) {
 
-        
-        
-        // copy elements from internal (now sorted) back to array
-        for (int i = 0; i < array.length; i++)
-            array[i] = heap.internal[i];
-        
-        
-    }
+		HeapSorter heap = new HeapSorter(array);
+
+		int pos = heap.heapSize-1;
+		while (pos > 0) {
+			heap.swap(0, pos);
+			heap.sinkKeyAt(0);
+			pos--;	
+		}
+		// copy elements from internal (now sorted) back to array
+		for (int i = 0; i < array.length; i++)
+			array[i] = heap.internal[i];
+
+	}
 
 }
