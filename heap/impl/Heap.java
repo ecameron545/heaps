@@ -94,26 +94,30 @@ public abstract class Heap<E> {
 	protected void sinkKeyAt(int i) {
 		assert isHeapBut(i);
 		
+		// check if left(i) exists and if the number at left(i) is bigger than the number at i
 		if (left(i) < heapSize && compy.compare(internal[left(i)], internal[i]) > 0) {
 			
-			if(right(i) > heapSize) {
-				System.out.println(i);
-
+			// check if there is a right child
+			if(right(i) >= heapSize) {
 				swap(left(i), i);
 				sinkKeyAt(left(i));
 			}
-
+			
+			// If there is a right child make sure its less then the left child.
+			// If this is true sink key at left because its the smaller of the two numbers but
+			// still larger than the parent number
 			if (right(i) < heapSize && compy.compare(internal[left(i)], internal[right(i)]) > 0) {	
 				swap(left(i), i);
 				sinkKeyAt(left(i));
 			}
-		}
+		} 
 		
-		if (right(i) < heapSize && compy.compare(internal[right(i)], internal[i]) > 0) {
+		// After the previous checks if we get here and the right child exists, sink key on the right
+		if(right(i) < heapSize && compy.compare(internal[right(i)], internal[i]) > 0) {
 			swap(right(i), i);
 			sinkKeyAt(right(i));
 		}
-		return;		
+		return;	
 	}
 
 	/**
@@ -131,6 +135,9 @@ public abstract class Heap<E> {
 	 */
 	protected void raiseKeyAt(int i) {
 		assert i == 0 || isHeapBut(parent(i));
+		
+		// if the parent index is not the root and the parent number is smaller
+		// then the child number, swap them and call recursive function on parent
 		if (parent(i) >= 0 && compy.compare(internal[parent(i)], internal[i]) < 0) {
 			swap(parent(i), i);
 			raiseKeyAt(parent(i));
