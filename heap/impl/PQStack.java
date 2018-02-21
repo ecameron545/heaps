@@ -22,7 +22,7 @@ public class PQStack<E> implements Stack<E> {
      * The priority queue to use as an internal representation.
      */
     private HeapPriorityQueue<E> pq;
-
+    private int priority = 0;
     /**
      * Place to store data associated with representative
      * values in the priority queue.
@@ -37,7 +37,20 @@ public class PQStack<E> implements Stack<E> {
      */
     public PQStack(int maxSize) {
         arrivalTimes = new ListMap<E, Integer>();
-        //finish constructor here
+        
+        Comparator compy = new Comparator<E>() {
+
+			public int compare(E o1, E o2) {
+				if (arrivalTimes.get(o1) < arrivalTimes.get(o2))
+					return -1;
+				else if (arrivalTimes.get(o1) > arrivalTimes.get(o2))
+					return 1;
+				else
+					return 0;
+			}
+		};
+		
+		pq = new HeapPriorityQueue<E>(maxSize, compy);
     }
 
     /**
@@ -57,7 +70,10 @@ public class PQStack<E> implements Stack<E> {
      * @return The top element.
      */
     public E top() { 
-         throw new UnsupportedOperationException();
+    	if(isEmpty())
+			throw new NoSuchElementException();
+		
+		return pq.max();
     }
 
     /**
@@ -65,15 +81,21 @@ public class PQStack<E> implements Stack<E> {
      * @return The top element.
      */
     public E pop() {
-         throw new UnsupportedOperationException();
-    }
+    	if(isEmpty())
+			throw new NoSuchElementException();
+		
+		E ret = pq.extractMax();
+		arrivalTimes.remove(ret);
+		return ret;    
+	}
 
     /**
      * Add an element to this stack.
      * @param x The element to add.
      */
     public void push(E x) {
-         throw new UnsupportedOperationException();
+    	arrivalTimes.put(x, priority++);
+		pq.insert(x);
     }
 
     public String toString() { return pq.toString(); }
